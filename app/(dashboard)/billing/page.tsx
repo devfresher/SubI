@@ -14,11 +14,12 @@ export default async function BillingPage() {
   const ledger = await billingRepo.listLedgerForUser(supabase, user.id, 100);
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Billing</h1>
-        <p className="mt-2 max-w-2xl text-sm text-muted sm:text-base">
-          See your plan, payments, and subscription changes in one place. Renewal and card updates happen on our secure billing page — your plan here updates shortly after changes complete.
+    <div className="space-y-10">
+      <div className="border-b border-border/50 pb-10">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-bright">Account</p>
+        <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Billing</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+          Your SubI plan, payments, and subscription activity in one view. Renewals and saved cards stay on our secure billing page — updates here typically follow within moments.
         </p>
       </div>
 

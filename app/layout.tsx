@@ -11,9 +11,9 @@ const display = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "SubI — subscription renewals without the noise",
+  title: "SubI — know renewals before they charge",
   description:
-    "Subscription intelligence: track billing dates, optional Gmail sync, manual entries, and reminders—in one calm obsidian & gold dashboard.",
+    "Subscription intelligence for busy operators: optional Gmail hints, manual control, timezone-smart reminders, and cancel links—one premium hub.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

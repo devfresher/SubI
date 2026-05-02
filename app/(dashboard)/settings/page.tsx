@@ -32,26 +32,30 @@ export default async function SettingsPage() {
   const plan = profile?.plan ?? "free";
 
   return (
-    <div className="mx-auto max-w-2xl space-y-12">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Settings</h1>
-        <p className="mt-2 max-w-xl text-sm text-muted sm:text-base">
-          Mailboxes, timezone, and how early we remind you before renewals.
+    <div className="space-y-12">
+      <div className="border-b border-border/50 pb-10">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-bright">Account</p>
+        <h1 className="mt-3 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl">Settings</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
+          Connect mailboxes, tune reminders, and keep renewal emails aligned with where you actually live — all in one
+          calm workspace.
         </p>
       </div>
 
-      <Suspense fallback={<div className="h-32 animate-pulse rounded-xl bg-gold-dim/20" aria-hidden />}>
-        <SettingsMailboxes initialAccounts={mailboxes} plan={plan} />
-      </Suspense>
+      <div className="mx-auto flex max-w-3xl flex-col gap-14">
+        <Suspense fallback={<div className="h-36 animate-pulse rounded-2xl bg-gold-dim/20" aria-hidden />}>
+          <SettingsMailboxes initialAccounts={mailboxes} plan={plan} />
+        </Suspense>
 
-      <SettingsForm
-        timezones={ZONES}
-        initialTimezone={profile?.timezone ?? "UTC"}
-        initialReminders={profile?.reminder_preferences ?? [1, 3]}
-        plan={plan}
-      />
+        <SettingsForm
+          timezones={ZONES}
+          initialTimezone={profile?.timezone ?? "UTC"}
+          initialReminders={profile?.reminder_preferences ?? [1, 3]}
+          plan={plan}
+        />
 
-      <AccountDangerZone email={user.email} />
+        <AccountDangerZone email={user.email} />
+      </div>
     </div>
   );
 }

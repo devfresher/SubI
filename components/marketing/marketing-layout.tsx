@@ -56,6 +56,9 @@ function GuestMarketingHeader() {
           </span>
         </Link>
         <nav className="hidden items-center gap-1 md:flex" aria-label="Site">
+          <GuestNavItem href="/#built-for" anchor>
+            Who it&apos;s for
+          </GuestNavItem>
           <GuestNavItem href="/#features" anchor>
             Features
           </GuestNavItem>
@@ -115,8 +118,8 @@ export function MarketingLayout({
             <span className="font-display text-lg font-semibold">
               Sub<span className="text-gold-bright">I</span>
             </span>
-            <p className="text-center text-xs text-muted sm:text-left">
-              Subscription renewals, reminders, and calm.
+            <p className="max-w-[16rem] text-center text-xs text-muted sm:text-left">
+              One quiet place for every renewal—inbox hints optional, reminders in your timezone.
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted">
@@ -142,6 +145,12 @@ export function MarketingLayout({
             <Link href="/pricing" className="transition hover:text-foreground">
               Pricing
             </Link>
+            <span className="text-border" aria-hidden>
+              ·
+            </span>
+            <a href="/#built-for" className="transition hover:text-foreground">
+              Who it&apos;s for
+            </a>
             <span className="text-border" aria-hidden>
               ·
             </span>

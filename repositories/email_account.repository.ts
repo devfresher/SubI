@@ -68,7 +68,10 @@ export async function upsertGmailOAuthAccount(params: {
   encryptedRefresh: string;
   tokenExpiresAt: string | null;
   plan: UserPlan;
-}): Promise<{ ok: true; row: EmailAccountRow } | { ok: false; reason: "mailbox_limit" }> {
+}): Promise<
+  | { ok: true; row: EmailAccountRow }
+  | { ok: false; reason: "mailbox_limit" | "mailbox_already_linked" }
+> {
   const {
     supabase,
     userId,
@@ -118,7 +121,15 @@ export async function upsertGmailOAuthAccount(params: {
     })
     .select("*")
     .single();
-  if (error) throw error;
+  if (error) {
+    const dup =
+      error.code === "23505" ||
+      (typeof error.message === "string" && /duplicate key|unique constraint/i.test(error.message));
+    if (dup) {
+      return { ok: false, reason: "mailbox_already_linked" };
+    }
+    throw error;
+  }
   return { ok: true, row: data as EmailAccountRow };
 }
 

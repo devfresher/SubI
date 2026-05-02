@@ -69,6 +69,9 @@ export async function GET(request: Request) {
     });
 
     if (!result.ok) {
+      if (result.reason === "mailbox_already_linked") {
+        return NextResponse.redirect(`${settingsBase}?gmail=taken`);
+      }
       return NextResponse.redirect(`${settingsBase}?gmail=limit`);
     }
 

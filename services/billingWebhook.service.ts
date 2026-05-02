@@ -45,10 +45,13 @@ function readSubscriptionCode(data: Record<string, unknown>): string | null {
     typeof data.subscription === "object" && data.subscription !== null
       ? (data.subscription as Record<string, unknown>)
       : undefined;
+  const fromNestedCode =
+    typeof subNested?.code === "string" && /^SUB_/i.test(subNested.code) ? subNested.code.trim() : null;
   const raw =
     (typeof data.subscription_code === "string" ? data.subscription_code : null) ??
-    (typeof subNested?.subscription_code === "string" ? (subNested.subscription_code as string) : null);
-  return raw?.trim() ? raw : null;
+    (typeof subNested?.subscription_code === "string" ? (subNested.subscription_code as string) : null) ??
+    fromNestedCode;
+  return raw?.trim() ? raw.trim() : null;
 }
 
 function readEmailToken(data: Record<string, unknown>): string | null {
@@ -85,20 +88,38 @@ function readCustomerEmail(data: Record<string, unknown>): string | null {
   return e?.trim() ? e.trim().toLowerCase() : null;
 }
 
-function readSubiUserIdFromMetadata(data: Record<string, unknown>): string | null {
+function readChargeMetadataObject(data: Record<string, unknown>): Record<string, unknown> | null {
   const meta = data.metadata;
-  let obj: Record<string, unknown> | null = null;
-  if (meta && typeof meta === "object" && !Array.isArray(meta)) obj = meta as Record<string, unknown>;
-  else if (typeof meta === "string") {
+  if (meta && typeof meta === "object" && !Array.isArray(meta)) return meta as Record<string, unknown>;
+  if (typeof meta === "string") {
     try {
       const p = JSON.parse(meta) as unknown;
-      if (p && typeof p === "object" && !Array.isArray(p)) obj = p as Record<string, unknown>;
+      if (p && typeof p === "object" && !Array.isArray(p)) return p as Record<string, unknown>;
     } catch {
-      obj = null;
+      return null;
     }
   }
+  return null;
+}
+
+function readSubiUserIdFromMetadata(data: Record<string, unknown>): string | null {
+  const obj = readChargeMetadataObject(data);
   const uid = obj?.subi_user_id;
   return typeof uid === "string" && /^[0-9a-f-]{36}$/i.test(uid) ? uid : null;
+}
+
+function readSubiProductFromMetadata(data: Record<string, unknown>): string | null {
+  const obj = readChargeMetadataObject(data);
+  const p = obj?.subi_product;
+  return typeof p === "string" ? p.trim() : null;
+}
+
+/** Plan object (PLN_*) on a charge — Paystack omits top-level `subscription_code` on many `charge.success` payloads. */
+function paystackChargeHasPlanSku(data: Record<string, unknown>): boolean {
+  const p = data.plan;
+  if (!p || typeof p !== "object") return false;
+  const code = (p as Record<string, unknown>).plan_code;
+  return typeof code === "string" && code.trim().length > 0;
 }
 
 async function resolveWebhookUserId(
@@ -351,10 +372,25 @@ export async function processPaystackWebhookEvent(
       });
 
       const sub_code = readSubscriptionCode(data);
-      if (sub_code) {
+      const cust = readCustomerCode(data);
+      const chargedOk = typeof data.status === "string" && data.status.toLowerCase() === "success";
+      const subiCheckout =
+        chargedOk &&
+        (readSubiProductFromMetadata(data) === "subi_pro_checkout" ||
+          (readSubiUserIdFromMetadata(data) !== null && paystackChargeHasPlanSku(data)));
+
+      if (subiCheckout || sub_code) {
+        const email_token = readEmailToken(data);
         await userRepo.updateUserBilling(admin, userId, {
           plan: "pro",
-          paystack_subscription_code: sub_code,
+          paystack_subscription_status: "active",
+          ...(cust ? { paystack_customer_code: cust } : {}),
+          ...(sub_code
+            ? {
+                paystack_subscription_code: sub_code,
+                ...(email_token ? { paystack_email_token: email_token } : {}),
+              }
+            : {}),
         });
       }
       return;
