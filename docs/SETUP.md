@@ -35,7 +35,7 @@ pnpm install
 1. In Google Cloud Console → APIs → enable **Gmail API**.
 2. OAuth consent screen → add `.../auth/gmail.readonly` scope for your test users.
 3. Credentials → OAuth client → **Web application**:
-   - Authorized redirect URIs: `http://localhost:3000/api/gmail/callback` (and production URL).
+   - Authorized redirect URIs: one entry per environment, each your site origin plus `/api/gmail/callback` (same path you set as `GOOGLE_REDIRECT_URI`).
 4. Copy client ID and secret into `.env.local` as `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
 
 ## 4. Resend
