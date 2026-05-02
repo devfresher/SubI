@@ -1,0 +1,13 @@
+---
+description: SubZap invariants for Cursor agents
+globs: "**/*.{ts,tsx,sql}"
+---
+
+# SubZap rules
+
+- Use **pnpm** for all package management.
+- Do not expose `SUPABASE_SERVICE_ROLE_KEY`, `TOKEN_ENCRYPTION_KEY`, `GOOGLE_CLIENT_SECRET`, or `RESEND_API_KEY` as `NEXT_PUBLIC_*`.
+- All new Postgres tables must have **RLS** and `user_id = auth.uid()` (or `id = auth.uid()` for `public.users`) policies unless explicitly documented as system-only.
+- Gmail token encryption/decryption only in server contexts (`lib/crypto`, Route Handlers, Edge Functions).
+- Prefer extending `SubscriptionParser` / `EmailProvider` abstractions over one-off Gmail logic in UI components.
+- Reminder semantics must follow [docs/DOMAIN.md](docs/DOMAIN.md) (UTC `notify_at`, user timezone for wall clock).

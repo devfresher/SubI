@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Obsidian + gold — light = warm paper, dark = vault */
+:root {
+  --background: #f5f2eb;
+  --foreground: #141210;
+  --muted: #5c574f;
+  --card: #fffef9;
+  --card-hover: #faf8f2;
+  --border: rgba(20, 18, 16, 0.1);
+  --gold: #a88b2a;
+  --gold-bright: #c9a227;
+  --gold-dim: rgba(201, 162, 39, 0.14);
+  --gold-glow: rgba(201, 162, 39, 0.25);
+  --danger: #b91c1c;
+  --ring: #c9a227;
+  /* fixed-layer atmosphere (see body) */
+  --vault-glow-tl: rgba(201, 162, 39, 0.14);
+  --vault-glow-br: rgba(201, 162, 39, 0.08);
+  --vault-glow-hero: transparent;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #f4f3ef;
+  --muted: #9c958a;
+  --card: #101012;
+  --card-hover: #18181c;
+  --border: rgba(201, 162, 39, 0.14);
+  --gold: #c9a227;
+  --gold-bright: #e4c75a;
+  --gold-dim: rgba(201, 162, 39, 0.1);
+  --gold-glow: rgba(201, 162, 39, 0.35);
+  --danger: #f87171;
+  --ring: #e4c75a;
+  --vault-glow-tl: rgba(201, 162, 39, 0.2);
+  --vault-glow-br: rgba(201, 162, 39, 0.12);
+  --vault-glow-hero: rgba(201, 162, 39, 0.07);
+}
+
+html {
+  min-height: 100%;
+}
+
+/* One consistent “vault” atmosphere on every page (login, landing, dashboard, settings) */
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  background-image: radial-gradient(
+      ellipse 58% 46% at 4% -6%,
+      var(--vault-glow-tl),
+      transparent 52%
+    ),
+    radial-gradient(ellipse 46% 40% at 96% 104%, var(--vault-glow-br), transparent 50%),
+    radial-gradient(ellipse 120% 85% at 50% -25%, var(--vault-glow-hero), transparent 58%);
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /** Faint section rule — softer than a solid border; uses --border (Tailwind can't via-border/50 on CSS vars) */
+  .section-rule-top {
+    position: relative;
+  }
+  .section-rule-top::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--border) 50%, transparent 100%);
+  }
+}
