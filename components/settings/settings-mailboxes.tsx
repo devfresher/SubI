@@ -4,7 +4,7 @@ import { SettingsSectionHeading, SettingsSurface } from "@/components/settings/s
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AppConfirmDialog } from "@/components/ui/app-dialogs";
-import { EMAIL_SYNC_PROVIDER_REGISTRY } from "@/lib/email-providers/registry";
+import { EMAIL_SYNC_PROVIDER_REGISTRY, getEmailProviderLabel } from "@/lib/email-providers/registry";
 import { cn } from "@/lib/utils/strings";
 import type { EmailAccountRow, UserPlan } from "@/types";
 import Link from "next/link";
@@ -107,7 +107,8 @@ export function SettingsMailboxes({
         title="Mailboxes"
         description={
           <>
-            Connect Gmail so SubI can suggest renewals from your inbox.{" "}
+            Link mailboxes by provider—<span className="font-medium text-foreground">Gmail</span> is available now; others land
+            here when ready. SubI suggests renewals from messages in each connected inbox.{" "}
             <span className="font-medium text-foreground">
               Free: one inbox, aligned with how you signed in unless you upgrade.
             </span>{" "}
@@ -120,7 +121,7 @@ export function SettingsMailboxes({
         <div className="space-y-4">
           {gmailFlag === "connected" && (
             <div className="rounded-xl border border-gold/35 bg-gold-dim/30 px-4 py-3 text-sm text-foreground shadow-sm dark:border-gold/25 dark:bg-gold-dim/15">
-              Gmail connected. Tap <strong>Sync</strong> on a mailbox when you want the latest receipts parsed.
+              Gmail connected. Tap <strong>Sync</strong> on your Gmail card when you want the latest receipts parsed.
             </div>
           )}
           {gmailFlag === "limit" && (
@@ -143,7 +144,7 @@ export function SettingsMailboxes({
           )}
           {gmailFlag === "taken" && (
             <div className="rounded-xl border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-danger dark:bg-danger/[0.12]">
-              That inbox is already tied to another SubI account. Use a different Gmail, or disconnect it from the other
+              That Gmail inbox is already tied to another SubI account. Use a different Gmail address, or disconnect it from the other
               profile first.
             </div>
           )}
@@ -176,7 +177,7 @@ export function SettingsMailboxes({
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="rounded-md border border-gold/30 bg-gold-dim/40 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-gold-bright">
-                        Gmail
+                        {getEmailProviderLabel(a.provider)}
                       </span>
                       <span className="text-xs text-muted">{formatSyncedAt(a.last_sync_at)}</span>
                     </div>
@@ -262,7 +263,7 @@ export function SettingsMailboxes({
       <AppConfirmDialog
         open={disconnectConfirmId !== null}
         title="Disconnect mailbox?"
-        description="Subscriptions we already inferred stay on your list. You can reconnect Gmail anytime from Settings."
+        description="Subscriptions we already inferred stay on your list. You can reconnect Gmail anytime from Mailboxes."
         confirmLabel="Disconnect"
         cancelLabel="Cancel"
         dangerConfirm

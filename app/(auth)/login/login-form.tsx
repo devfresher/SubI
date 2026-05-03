@@ -8,7 +8,7 @@ import { useState } from "react";
 const PILLARS = [
   {
     title: "One list",
-    body: "Gmail hints and manual subscriptions together—deduped by name so the list stays honest.",
+    body: "Mailbox hints and manual subscriptions together—deduped by name so the list stays honest.",
     icon: StackIcon,
   },
   {
@@ -18,7 +18,7 @@ const PILLARS = [
   },
   {
     title: "You stay in charge",
-    body: "Encrypted session via Supabase. Gmail sync is optional and can be disconnected anytime.",
+    body: "Encrypted session via Supabase. Mailbox sync is optional and can be disconnected anytime.",
     icon: LockIcon,
   },
 ] as const;
@@ -156,7 +156,7 @@ export function LoginForm({ authError, redirectTo }: { authError?: string; redir
                 Welcome back
               </h1>
               <p className="mt-2 max-w-[36ch] text-sm leading-relaxed text-muted">
-                Google, Sign in with Apple, or email magic link. Connect Gmail later in Settings—it stays optional.
+                Google, Sign in with Apple, or email magic link. Connect a mailbox later in Settings—it stays optional.
               </p>
             </div>
 
@@ -228,7 +228,7 @@ export function LoginForm({ authError, redirectTo }: { authError?: string; redir
                       type="button"
                       disabled={busy !== null || !email.trim()}
                       onClick={() => void sendMagicLink()}
-                      className="flex h-11 w-full items-center justify-center rounded-full border border-gold/35 bg-gold-dim/25 px-4 text-sm font-semibold text-foreground transition hover:bg-gold-dim/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:cursor-not-allowed disabled:opacity-45"
+                      className="flex h-[3.25rem] w-full items-center justify-center rounded-full border border-border/90 bg-gradient-to-b from-card to-card-hover px-4 text-sm font-semibold tracking-tight text-foreground shadow-sm ring-1 ring-black/[0.03] transition hover:border-gold/40 hover:shadow-[0_0_0_1px_rgba(201,162,39,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:cursor-not-allowed disabled:opacity-45 active:scale-[0.99] dark:from-card-hover dark:to-card/90 dark:ring-white/[0.06]"
                     >
                       {busy === "email" ? "Sending…" : "Email me a sign-in link"}
                     </button>
@@ -239,16 +239,29 @@ export function LoginForm({ authError, redirectTo }: { authError?: string; redir
                     ) : null}
                   </div>
 
-                  <div className="mt-8 flex items-start gap-3 border-t border-border/50 pt-6">
-                    <LockIcon className="mt-0.5 h-4 w-4 shrink-0 text-gold-bright/80" />
-                    <p className="text-xs leading-relaxed text-muted">
-                      Protected session via Supabase auth.{" "}
-                      <Link
-                        href="/#features"
-                        className="font-medium text-gold-bright underline-offset-4 transition hover:underline"
-                      >
-                        New to SubI?
+                  <div className="mt-8 space-y-4 border-t border-border/50 pt-6">
+                    <div className="flex items-start gap-3">
+                      <LockIcon className="mt-0.5 h-4 w-4 shrink-0 text-gold-bright/80" />
+                      <p className="text-xs leading-relaxed text-muted">
+                        Protected session via Supabase auth.{" "}
+                        <Link
+                          href="/#features"
+                          className="font-medium text-gold-bright underline-offset-4 transition hover:underline"
+                        >
+                          New to SubI?
+                        </Link>
+                      </p>
+                    </div>
+                    <p className="text-[11px] leading-relaxed text-muted/90">
+                      By continuing you agree to our{" "}
+                      <Link href="/terms" className="font-medium text-gold-bright underline-offset-4 hover:underline">
+                        Terms
+                      </Link>{" "}
+                      and{" "}
+                      <Link href="/privacy" className="font-medium text-gold-bright underline-offset-4 hover:underline">
+                        Privacy Policy
                       </Link>
+                      .
                     </p>
                   </div>
                 </div>

@@ -79,13 +79,25 @@ function flattenParts(
   }
 }
 
+function headerValue(
+  headers: { name?: string | null; value?: string | null }[],
+  name: string,
+): string | null {
+  const want = name.toLowerCase();
+  const raw = headers.find((h) => h.name?.toLowerCase() === want)?.value?.trim();
+  return raw && raw.length > 0 ? raw : null;
+}
+
 export function messageToNormalized(
   full: gmail_v1.Schema$Message,
   messageId: string,
 ): NormalizedEmail {
   const headers = full.payload?.headers ?? [];
-  const subject = headers.find((h) => h.name?.toLowerCase() === "subject")?.value ?? "";
-  const from = headers.find((h) => h.name?.toLowerCase() === "from")?.value ?? "";
+  const subject = headerValue(headers, "Subject") ?? "";
+  const from = headerValue(headers, "From") ?? "";
+  const listUnsubscribe = headerValue(headers, "List-Unsubscribe");
+  const replyTo = headerValue(headers, "Reply-To");
+  const precedence = headerValue(headers, "Precedence");
   const snippet = full.snippet ?? "";
   const bodies: { mimeType?: string | null; body?: gmail_v1.Schema$MessagePartBody | null }[] =
     [];
@@ -108,15 +120,31 @@ export function messageToNormalized(
     snippet,
     bodyText,
     from,
+    listUnsubscribe,
+    replyTo,
+    precedence,
   };
+}
+
+function isGmailMessageNotFound(err: unknown): boolean {
+  const e = err as { code?: number; status?: number; errors?: Array<{ reason?: string }> };
+  if (e.code === 404 || e.status === 404) return true;
+  return e.errors?.[0]?.reason === "notFound";
 }
 
 export async function fetchFullMessage(
   gmail: gmail_v1.Gmail,
   id: string,
-): Promise<NormalizedEmail> {
-  const full = await gmail.users.messages.get({ userId: "me", id, format: "full" });
-  return messageToNormalized(full.data, id);
+): Promise<NormalizedEmail | null> {
+  try {
+    const full = await gmail.users.messages.get({ userId: "me", id, format: "full" });
+    return messageToNormalized(full.data, id);
+  } catch (err: unknown) {
+    if (isGmailMessageNotFound(err)) {
+      return null;
+    }
+    throw err;
+  }
 }
 
 export async function getCurrentHistoryId(gmail: gmail_v1.Gmail): Promise<string | null> {

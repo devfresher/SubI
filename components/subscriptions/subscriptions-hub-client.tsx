@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { fieldControlClass } from "@/components/ui/form-primitives";
 import { Select } from "@/components/ui/select";
 import { useSubscriptionQuery } from "@/hooks/useSubscriptionQuery";
+import { getEmailProviderLabel } from "@/lib/email-providers/registry";
 import { cn } from "@/lib/utils/strings";
 import { useMemo, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -46,7 +47,8 @@ export function SubscriptionsHubClient({
       if (r.email_account_id && !seen.has(r.email_account_id)) {
         seen.add(r.email_account_id);
         const m = r.mailbox;
-        const prov = m?.provider === "gmail" ? "Gmail" : m?.provider ?? "Inbox";
+        const prov =
+          m?.provider != null ? getEmailProviderLabel(m.provider) : "Inbox";
         const em =
           typeof m?.provider_email === "string" && m.provider_email.trim() ? m.provider_email : "—";
         opts.push({ value: r.email_account_id, label: `${prov} · ${em}` });
@@ -176,8 +178,8 @@ export function SubscriptionsHubClient({
         <Card className="border border-dashed border-border/60 bg-card/40 p-10 text-center">
           <p className="font-medium text-foreground">No subscriptions yet</p>
           <p className="mt-2 text-sm text-muted">
-            Add one manually or connect Gmail in Settings and run a sync—then curate with Ignore / Edit date when the inbox
-            is unsure.
+            Add one manually or connect Gmail under Settings → Mailboxes and run a sync—then curate with Ignore / Edit date when
+            the importer is unsure.
           </p>
         </Card>
       ) : filtered.length === 0 ? (

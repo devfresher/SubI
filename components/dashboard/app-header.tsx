@@ -72,7 +72,7 @@ export function AppHeader({
           <span className="font-display text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
             Sub<span className="text-gold-bright">I</span>
           </span>
-          <span className="hidden text-[10px] font-medium uppercase tracking-[0.2em] text-muted sm:block">
+          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
             Subscription intelligence
           </span>
         </Link>

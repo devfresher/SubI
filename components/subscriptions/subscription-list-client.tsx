@@ -13,6 +13,7 @@ import {
   urgencyBadgeLabel,
   urgencyRailClass,
 } from "@/lib/subscriptions/billingUrgency";
+import { getEmailProviderLabel } from "@/lib/email-providers/registry";
 import { cn } from "@/lib/utils/strings";
 import { useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
@@ -45,7 +46,7 @@ function mailboxSectionLabel(rows: SubscriptionRow[]): string {
   if (!r0?.email_account_id) return "Manual";
   const m = r0.mailbox;
   if (!m) return "Inbox";
-  const provLabel = m.provider === "gmail" ? "Gmail" : m.provider;
+  const provLabel = getEmailProviderLabel(m.provider);
   const email =
     typeof m.provider_email === "string" && m.provider_email.trim() ? m.provider_email : "—";
   return `${provLabel} · ${email}`;
@@ -142,7 +143,7 @@ export function SubscriptionListClient({
       <Card className="border border-border/60 border-dashed bg-card/40 text-center">
         <p className="font-medium text-foreground">Nothing matches</p>
         <p className="mt-2 text-sm text-muted">
-          Try another filter, or add subscriptions from Gmail sync in Settings.
+          Try another filter, or add subscriptions from Gmail sync under Settings → Mailboxes.
         </p>
       </Card>
     );

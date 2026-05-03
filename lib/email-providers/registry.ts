@@ -15,3 +15,8 @@ export const EMAIL_SYNC_PROVIDER_REGISTRY: EmailProviderRegistryEntry[] = [
   { id: "yahoo", label: "Yahoo", status: "coming" },
   { id: "imap_stub", label: "IMAP", status: "coming" },
 ];
+
+/** Human label for UI where a specific provider row is shown (Settings, subscription source). */
+export function getEmailProviderLabel(id: EmailSyncProvider): string {
+  return EMAIL_SYNC_PROVIDER_REGISTRY.find((p) => p.id === id)?.label ?? id;
+}

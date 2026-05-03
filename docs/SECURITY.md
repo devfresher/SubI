@@ -8,6 +8,7 @@
 | `TOKEN_ENCRYPTION_KEY` | Server / Edge only* | AES-256-GCM for Gmail tokens |
 | `GOOGLE_CLIENT_SECRET` | Server only | Gmail OAuth code exchange |
 | `RESEND_API_KEY` | Server + Edge | Send email |
+| `OPENAI_API_KEY` | Server only (optional) | Receipt extraction for **SubI Pro** during Gmail sync — see Receipt intelligence section |
 | Service role key | Edge function env only | Batch notification dispatch |
 
 *Next.js Route Handlers run on the server; never prefix these with `NEXT_PUBLIC_`.
@@ -38,6 +39,15 @@ The dashboard does not render raw email HTML. Parser consumes text only.
 ## Rate limiting
 
 Gmail sync (`POST /api/sync/gmail`) uses an in-memory per-user cooldown (`lib/utils/syncRateLimit.ts`) suitable for MVP; replace with Redis or DB-backed limits for multi-instance production.
+
+## Receipt intelligence (optional LLM)
+
+When `OPENAI_API_KEY` is set and `RECEIPT_LLM_DISABLED` is not set, **SubI Pro** users can use an extra parsing stage after rules/templates: a truncated copy of the message (subject, snippet, `From`, and a text-only body preview) is sent to the OpenAI Chat Completions API (see `lib/parsers/llm/receiptExtractor.ts`). Nothing is sent from the browser; only server-side sync invokes this path.
+
+- **Secrets**: treat `OPENAI_API_KEY` like other server-only keys; never `NEXT_PUBLIC_*`.
+- **Quota**: in-process daily cap per user (`RECEIPT_LLM_DAILY_CAP_PER_USER`, default 48); not suitable for multi-instance fleets without a shared store.
+- **Opt out**: set `RECEIPT_LLM_DISABLED=1` to force rules/templates/heuristics only.
+- **Logging**: set `LOG_INBOX_PARSE=1` for structured parse trace lines in server logs (never log full message bodies by default).
 
 ## Threat notes
 

@@ -46,41 +46,65 @@ function GuestNavItem({
 function GuestMarketingHeader() {
   return (
     <header className="relative z-20 border-b border-border/25 bg-background/70 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <Link href="/" className="group flex flex-col gap-0.5">
-          <span className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
-            Sub<span className="text-gold-bright">I</span>
-          </span>
-          <span className="hidden text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:block">
+      <div className="mx-auto max-w-6xl px-4 py-4 sm:px-6">
+        {/* Narrow screens: wordmark + actions on one row; tagline below so “Sign in” never wraps */}
+        <div className="flex flex-col gap-2 sm:hidden">
+          <div className="flex items-center justify-between gap-3">
+            <Link href="/" className="shrink-0 font-display text-xl font-semibold tracking-tight">
+              Sub<span className="text-gold-bright">I</span>
+            </Link>
+            <div className="flex shrink-0 items-center gap-2">
+              <Link
+                href="/login"
+                className="whitespace-nowrap rounded-lg px-2 py-2 text-sm font-medium text-muted transition hover:bg-gold-dim/40 hover:text-foreground"
+              >
+                Sign in
+              </Link>
+              <ThemeToggle />
+            </div>
+          </div>
+          <p className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
             Subscription intelligence
-          </span>
-        </Link>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Site">
-          <GuestNavItem href="/#built-for" anchor>
-            Who it&apos;s for
-          </GuestNavItem>
-          <GuestNavItem href="/#features" anchor>
-            Features
-          </GuestNavItem>
-          <GuestNavItem href="/#how-it-works" anchor>
-            How it works
-          </GuestNavItem>
-          <GuestNavItem href="/pricing">Pricing</GuestNavItem>
-        </nav>
-        <div className="flex items-center gap-2 sm:gap-3">
-          <Link
-            href="/login"
-            className="rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-gold-dim/40 hover:text-foreground"
-          >
-            Sign in
+          </p>
+        </div>
+
+        {/* sm+: single row */}
+        <div className="hidden items-center justify-between gap-4 sm:flex">
+          <Link href="/" className="group flex flex-col gap-0.5">
+            <span className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
+              Sub<span className="text-gold-bright">I</span>
+            </span>
+            <span className="text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
+              Subscription intelligence
+            </span>
           </Link>
-          <ThemeToggle />
-          <Link
-            href="/login"
-            className="hidden rounded-lg bg-gold-bright px-4 py-2.5 text-sm font-semibold text-background shadow-premium transition hover:brightness-110 sm:inline-flex sm:items-center sm:justify-center dark:text-background"
-          >
-            Get started
-          </Link>
+          <nav className="hidden items-center gap-1 md:flex" aria-label="Site">
+            <GuestNavItem href="/#built-for" anchor>
+              Who it&apos;s for
+            </GuestNavItem>
+            <GuestNavItem href="/#features" anchor>
+              Features
+            </GuestNavItem>
+            <GuestNavItem href="/#how-it-works" anchor>
+              How it works
+            </GuestNavItem>
+            <GuestNavItem href="/pricing">Pricing</GuestNavItem>
+          </nav>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/login"
+              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-muted transition hover:bg-gold-dim/40 hover:text-foreground"
+            >
+              Sign in
+            </Link>
+            <ThemeToggle />
+            <Link
+              href="/login"
+              className="inline-flex items-center justify-center rounded-lg bg-gold-bright px-4 py-2.5 text-sm font-semibold text-background shadow-premium transition hover:brightness-110 dark:text-background"
+            >
+              Get started
+            </Link>
+          </div>
         </div>
       </div>
     </header>
@@ -144,6 +168,18 @@ export function MarketingLayout({
             )}
             <Link href="/pricing" className="transition hover:text-foreground">
               Pricing
+            </Link>
+            <span className="text-border" aria-hidden>
+              ·
+            </span>
+            <Link href="/privacy" className="transition hover:text-foreground">
+              Privacy
+            </Link>
+            <span className="text-border" aria-hidden>
+              ·
+            </span>
+            <Link href="/terms" className="transition hover:text-foreground">
+              Terms
             </Link>
             <span className="text-border" aria-hidden>
               ·

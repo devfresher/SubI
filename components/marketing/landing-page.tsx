@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils/strings";
 import Link from "next/link";
 
 const TRUST_ITEMS = [
-  "Gmail is optional—you can run everything manually.",
+  "Mailbox sync is optional—you can run everything manually.",
   "Reminders follow your timezone and per-plan lead times.",
   "You approve what counts as a subscription; no blind automation.",
 ] as const;
@@ -34,7 +34,7 @@ const AUDIENCE = [
 
 const FEATURES = [
   {
-    title: "Gmail-aware detection",
+    title: "Mailbox-aware detection",
     body:
       "Surface renewal receipts alongside what you enter by hand—one list across mailboxes without duplicate noise.",
     Icon: MailIcon,
@@ -60,13 +60,13 @@ const FEATURES = [
 const STEPS = [
   {
     step: "1",
-    title: "Sign in with Google",
-    body: "One identity for auth; connect Gmail from Settings whenever you’re ready—never forced upfront.",
+    title: "Sign in",
+    body: "One identity for auth; connect a mailbox from Settings whenever you’re ready—never forced upfront.",
   },
   {
     step: "2",
     title: "Add or let your inbox hint",
-    body: "Type plans manually or run a Gmail sync—merge results into one polished roster grouped by mailbox.",
+    body: "Type plans manually or run a mailbox sync—merge results into one polished roster grouped by mailbox.",
   },
   {
     step: "3",
@@ -82,15 +82,16 @@ export function LandingPage() {
         {/* Hero */}
         <section className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:px-6 sm:pb-14 sm:pt-16 lg:pb-16 lg:pt-20">
           <div className="relative overflow-hidden rounded-3xl border border-border/35 bg-gradient-to-br from-card/90 via-background/65 to-card/80 p-[1px] shadow-premium backdrop-blur-sm dark:from-card/70 dark:to-card/40 dark:shadow-premium-lg sm:rounded-[1.85rem]">
+            {/* Glow stays in the top-right “empty” zone on mobile so it doesn’t wash across the headline */}
             <div
-              className="pointer-events-none absolute -right-[18%] -top-[55%] h-[min(28rem,90vw)] w-[min(28rem,90vw)] rounded-full bg-[radial-gradient(circle,var(--vault-glow-tl)_0%,transparent_68%)] opacity-95 dark:opacity-100"
+              className="pointer-events-none absolute z-0 rounded-full bg-[radial-gradient(circle,var(--vault-glow-tl)_0%,transparent_72%)] opacity-75 sm:opacity-95 dark:opacity-90 sm:dark:opacity-100 h-44 w-44 translate-x-[28%] -translate-y-[20%] right-0 top-0 sm:h-[min(28rem,90vw)] sm:w-[min(28rem,90vw)] sm:-translate-y-0 sm:translate-x-0 sm:-right-[18%] sm:-top-[55%]"
               aria-hidden
             />
             <div
-              className="pointer-events-none absolute inset-y-6 left-0 w-px bg-gradient-to-b from-transparent via-gold-bright/50 to-transparent sm:inset-y-8"
+              className="pointer-events-none absolute inset-y-6 left-0 z-0 w-px bg-gradient-to-b from-transparent via-gold-bright/50 to-transparent sm:inset-y-8"
               aria-hidden
             />
-            <div className="relative rounded-[calc(1.85rem-1px)] px-5 pb-10 pt-9 sm:px-10 sm:pb-14 sm:pt-12 lg:px-14">
+            <div className="relative z-10 rounded-[calc(1.85rem-1px)] px-5 pb-10 pt-9 sm:px-10 sm:pb-14 sm:pt-12 lg:px-14">
               <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-bright">
                 For people who forgot which tab holds the renewal
               </p>
@@ -98,7 +99,7 @@ export function LandingPage() {
                 Know every renewal before it charges—not after the receipt.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted text-balance sm:text-xl">
-                SubI is a composed subscription HQ: optional Gmail intelligence, tactile manual controls, reminders that feel luxurious,
+                SubI is a composed subscription HQ: optional mailbox intelligence, tactile manual controls, reminders that feel luxurious,
                 never nagging—built for anyone paying for SaaS like it&apos;s another utility bill.
               </p>
               <div className="mt-11 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">

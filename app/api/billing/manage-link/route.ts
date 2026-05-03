@@ -38,8 +38,9 @@ export async function GET() {
   const link = json.data?.link;
 
   if (!res.ok || !json.status || !link) {
+    console.error("[billing] Paystack manage link failed:", json.message, json);
     return NextResponse.json(
-      { error: json.message ?? "Couldn’t open the billing portal. Try again shortly.", detail: json },
+      { error: "Couldn’t open the billing portal right now. Try again shortly." },
       { status: 502 },
     );
   }

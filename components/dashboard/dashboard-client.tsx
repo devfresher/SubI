@@ -161,7 +161,8 @@ export function DashboardClient({
             <div className="border border-dashed border-border/55 bg-muted/15 py-14 text-center dark:bg-muted/[0.08]">
               <p className="font-display text-lg font-semibold text-foreground">Quiet horizon</p>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted">
-                Nothing is slated to renew in the next two weeks. Sync Gmail or add subscriptions—when urgency appears,
+                Nothing is slated to renew in the next two weeks. Sync Gmail from Mailboxes or add subscriptions manually—when
+                urgency appears,
                 you’ll find it pinned here instantly.
               </p>
               <Link href="/subscriptions" className={cn(subscriptionsLinkClass, "mx-auto mt-8 inline-flex max-w-fit")}>

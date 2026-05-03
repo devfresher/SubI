@@ -42,8 +42,12 @@ export async function POST() {
   const body = (await res.json()) as { status?: boolean; message?: string };
 
   if (!res.ok || body.status === false) {
+    console.error("[billing] Paystack subscription disable failed:", body.message, body);
     return NextResponse.json(
-      { error: body.message ?? "Couldn’t complete that request with billing. Try again or contact support.", detail: body },
+      {
+        error:
+          "We couldn’t complete that billing change. Try again in a moment, or open the billing portal from your subscription email.",
+      },
       { status: 502 },
     );
   }

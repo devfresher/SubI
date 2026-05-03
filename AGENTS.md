@@ -21,6 +21,7 @@ Use **pnpm only** (enforced via `preinstall`).
 
 | Path | Purpose |
 |------|---------|
+| `app/waitlist/` | Pre-launch waitlist (only when `SUBI_PRE_LAUNCH=1`; middleware blocks other routes) |
 | `app/(auth)/` | Login |
 | `app/(dashboard)/` | Authenticated shell: `/dashboard`, `/settings` |
 | `app/api/` | Route handlers: Gmail OAuth, `POST /api/sync/gmail`, settings, `DELETE /api/email-accounts/[id]` |
@@ -39,7 +40,7 @@ Use **pnpm only** (enforced via `preinstall`).
 
 ## Non‑negotiables
 
-1. **Browser** only gets `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Never ship service role, Resend key, token encryption key, or Google client secret to the client.
+1. **Browser** only gets `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Never ship service role, Resend key, token encryption key, Google client secret, Paystack secret, or OpenAI (receipt LLM) keys to the client.
 2. **RLS** is enabled on `users`, `email_accounts`, `subscriptions`, `notifications`. Policies scope by `auth.uid()` / `user_id`.
 3. **Gmail tokens** are stored AES-256-GCM encrypted (`TOKEN_ENCRYPTION_KEY`, base64 32-byte) — see `docs/SECURITY.md`.
 4. **Edge function** uses service role but must still filter by `user_id` when updating rows.
@@ -47,7 +48,8 @@ Use **pnpm only** (enforced via `preinstall`).
 
 ## Where to change what
 
-- **Parser heuristics:** `lib/parsers/basicKeywordParser.ts`
+- **Inbox parse pipeline (gates, templates, heuristics, optional Pro LLM):** `lib/parsers/pipeline/runInboxPipeline.ts`, `lib/parsers/templates/`, `lib/parsers/gates/`, `lib/parsers/llm/`
+- **Keyword fallback parser:** `lib/parsers/basicKeywordParser.ts`
 - **Gmail query / caps / history:** `lib/gmail/gmail.client.ts`
 - **Sync orchestration:** `services/email.service.ts`
 - **Dashboard data:** `hooks/useSubscriptions.ts`, `app/(dashboard)/dashboard/page.tsx`

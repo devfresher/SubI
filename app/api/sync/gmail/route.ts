@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            "Specify emailAccountId in the JSON body when you have more than one Gmail mailbox connected.",
+            "Specify emailAccountId in the JSON body when you have more than one mailbox connected.",
         },
         { status: 400 },
       );

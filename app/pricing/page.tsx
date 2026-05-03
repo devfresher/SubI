@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { PricingExperience } from "@/components/marketing/pricing-experience";
-import { getAuthAvatarUrl, getAuthDisplayName } from "@/lib/auth/userMetadata";
+import { getMarketingLayoutAuth } from "@/lib/auth/marketingLayoutAuth";
 import { createClient } from "@/lib/supabase/server";
 import * as pricingRepo from "@/repositories/pricing.repository";
-import * as userRepo from "@/repositories/user.repository";
 import type { UserPlan } from "@/types";
 
 export const metadata: Metadata = {
@@ -24,28 +23,17 @@ export default async function PricingPage() {
   ]);
 
   let currentPlan: UserPlan | null = null;
-  let pricingAuth: {
-    email: string | undefined;
-    avatarUrl: string | null;
-    displayName: string | null;
-    plan: UserPlan;
-  } | null = null;
+  let pricingAuth = undefined;
 
   if (user) {
-    const profile = await userRepo.getProfile(supabase, user.id);
-    currentPlan = profile?.plan ?? "free";
-    pricingAuth = {
-      email: user.email,
-      avatarUrl: getAuthAvatarUrl(user),
-      displayName: getAuthDisplayName(user),
-      plan: currentPlan,
-    };
+    pricingAuth = await getMarketingLayoutAuth(supabase, user);
+    currentPlan = pricingAuth?.plan ?? "free";
   }
 
   const paystackCheckoutReady = Boolean(process.env.PAYSTACK_SECRET_KEY?.trim());
 
   return (
-    <MarketingLayout auth={pricingAuth ?? undefined}>
+    <MarketingLayout auth={pricingAuth}>
       <PricingExperience
         plans={plans}
         quotes={quotes}

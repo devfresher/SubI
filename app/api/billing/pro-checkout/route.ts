@@ -45,8 +45,9 @@ function paystackInitialize(params: {
 export async function POST(req: Request) {
   const secret = process.env.PAYSTACK_SECRET_KEY?.trim();
   if (!secret) {
+    console.error("[billing] SubI Pro checkout: PAYSTACK_SECRET_KEY is not set.");
     return NextResponse.json(
-      { error: "Paystack secret not configured (PAYSTACK_SECRET_KEY)." },
+      { error: "Billing isn’t available on this deployment yet. Please try again later." },
       { status: 503 },
     );
   }
@@ -81,7 +82,7 @@ export async function POST(req: Request) {
 
   const resolved = resolveProPaystackPlanCode({ currency, paystackInterval });
   if ("error" in resolved) {
-    return NextResponse.json({ error: resolved.error }, { status: 500 });
+    return NextResponse.json({ error: resolved.error }, { status: 503 });
   }
 
   const catalogInterval = catalogIntervalFromPaystack(paystackInterval);
@@ -91,7 +92,7 @@ export async function POST(req: Request) {
   );
   if (!quote || quote.unit_amount_minor < 1) {
     return NextResponse.json(
-      { error: "No active Pro price in the catalog for this currency and billing period." },
+      { error: "That plan isn’t available right now. Try another billing option or refresh the page." },
       { status: 400 },
     );
   }
@@ -116,8 +117,9 @@ export async function POST(req: Request) {
   };
 
   if (!init.ok || !payJson.status || !payJson.data?.authorization_url) {
+    console.error("[billing] Paystack initialize failed:", payJson.message, payJson);
     return NextResponse.json(
-      { error: payJson.message ?? "Paystack initialization failed.", detail: payJson },
+      { error: "We couldn’t connect to billing. Try again in a moment, or use another billing option." },
       { status: 502 },
     );
   }

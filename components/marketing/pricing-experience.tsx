@@ -387,7 +387,7 @@ export function PricingExperience({
         </div>
 
         <p className="mx-auto mt-16 max-w-2xl text-center text-xs leading-relaxed text-muted">
-          Gmail sync is available today. Additional providers will appear in Settings when OAuth is ready. Taxes may
+          Mailbox sync is available today. Additional providers will appear in Settings when OAuth is ready. Taxes may
           apply by region—we&apos;ll show the final total at purchase.
         </p>
       </main>

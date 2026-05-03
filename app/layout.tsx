@@ -13,7 +13,7 @@ const display = Playfair_Display({
 export const metadata: Metadata = {
   title: "SubI — know renewals before they charge",
   description:
-    "Subscription intelligence for busy operators: optional Gmail hints, manual control, timezone-smart reminders, and cancel links—one premium hub.",
+    "Subscription intelligence for busy operators: optional mailbox hints, manual control, timezone-smart reminders, and cancel links—one premium hub.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,5 +1,5 @@
 import { decryptToken, encryptToken } from "@/lib/crypto/tokenEncryption";
-import { BasicKeywordParser } from "@/lib/parsers/basicKeywordParser";
+import { runInboxPipeline } from "@/lib/parsers/pipeline/runInboxPipeline";
 import {
   createGmailOAuth2,
   fetchFullMessage,
@@ -15,8 +15,6 @@ import * as userRepo from "@/repositories/user.repository";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { reconcileNotificationsForUser } from "@/services/notification.service";
 import type { EmailAccountRow } from "@/types";
-
-const parser = new BasicKeywordParser();
 
 async function getAuthorizedGmail(
   supabase: SupabaseClient,
@@ -75,6 +73,9 @@ export async function syncGmailMailbox(
   try {
     const { gmail, account } = await getAuthorizedGmail(supabase, userId, initial);
 
+    const profile = await userRepo.getProfile(supabase, userId);
+    const userPlan = profile?.plan ?? "free";
+
     let processed = 0;
     const idsToFetch: string[] = [];
 
@@ -92,17 +93,21 @@ export async function syncGmailMailbox(
     const uniqueIds = Array.from(new Set(idsToFetch));
     for (const id of uniqueIds) {
       const normalized = await fetchFullMessage(gmail, id);
-      const draft = parser.parse(normalized);
-      if (draft) {
-        const inserted = await subscriptionRepo.insertSubscriptionFromDraft(
-          supabase,
-          userId,
-          draft,
-          id,
-          account.id,
-        );
-        if (inserted) processed += 1;
+      if (!normalized) {
+        continue;
       }
+      const result = await runInboxPipeline(normalized, { userId, userPlan });
+      if (!result.ok) {
+        continue;
+      }
+      const inserted = await subscriptionRepo.insertSubscriptionFromDraft(
+        supabase,
+        userId,
+        result.draft,
+        id,
+        account.id,
+      );
+      if (inserted) processed += 1;
     }
 
     const historyId = await getCurrentHistoryId(gmail);
@@ -112,9 +117,9 @@ export async function syncGmailMailbox(
       sync_in_progress: false,
     });
 
-    const profile = await userRepo.getProfile(supabase, userId);
-    if (profile) {
-      await reconcileNotificationsForUser(supabase, userId, profile);
+    const profileRefresh = await userRepo.getProfile(supabase, userId);
+    if (profileRefresh) {
+      await reconcileNotificationsForUser(supabase, userId, profileRefresh);
     }
 
     return { processed };
