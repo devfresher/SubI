@@ -265,7 +265,7 @@ export function PricingExperience({
                 <p className="flex items-baseline gap-1 font-display text-5xl font-bold tabular-nums tracking-tight text-foreground">
                   {formatMoneyAmount(currency, 0)}
                 </p>
-                <p className="mt-1 text-sm text-muted">Forever — no card required to start.</p>
+                <p className="mt-1 text-sm text-muted">Free tier. No card to start.</p>
               </div>
               <ul className="mt-8 flex flex-1 flex-col gap-3">
                 {freePlan.feature_bullets.map((line) => (
@@ -341,7 +341,7 @@ export function PricingExperience({
                     </p>
                   </>
                 ) : (
-                  <p className="text-muted">Pricing is being updated for this combination — check back shortly.</p>
+                  <p className="text-muted">We&apos;re updating this combo. Check back shortly.</p>
                 )}
               </div>
               <ul className="mt-8 flex flex-1 flex-col gap-3">
@@ -350,7 +350,7 @@ export function PricingExperience({
                 ))}
               </ul>
               {currentPlan === "pro" ? (
-                <p className="mt-10 text-center text-sm text-muted">You&apos;re on Pro — thank you for supporting SubI.</p>
+                <p className="mt-10 text-center text-sm text-muted">You&apos;re on Pro. Thanks for the support.</p>
               ) : !isLoggedIn ? (
                 <Link
                   href={`/login?next=${encodeURIComponent("/pricing")}`}
@@ -388,7 +388,7 @@ export function PricingExperience({
 
         <p className="mx-auto mt-16 max-w-2xl text-center text-xs leading-relaxed text-muted">
           Mailbox sync is available today. Additional providers will appear in Settings when OAuth is ready. Taxes may
-          apply by region—we&apos;ll show the final total at purchase.
+          apply by region. The total at checkout is final.
         </p>
       </main>
 

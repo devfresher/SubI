@@ -7,8 +7,8 @@ import * as pricingRepo from "@/repositories/pricing.repository";
 import type { UserPlan } from "@/types";
 
 export const metadata: Metadata = {
-  title: "Pricing — SubI",
-  description: "Free and Pro plans for SubI—multi-currency quotes, mailbox limits, and renewal reminders.",
+  title: "Pricing · SubI",
+  description: "Free and Pro. Multi-currency quotes, mailbox limits, renewal reminders.",
 };
 
 export default async function PricingPage() {

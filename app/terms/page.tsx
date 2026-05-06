@@ -11,8 +11,8 @@ import { getMarketingLayoutAuth } from "@/lib/auth/marketingLayoutAuth";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — SubI",
-  description: "Terms governing use of SubI—subscription intelligence, optional mailbox sync, and paid plans.",
+  title: "Terms of Service · SubI",
+  description: "Terms for SubI: subscription tracking, optional mailbox sync, and paid plans.",
 };
 
 const TOC = [

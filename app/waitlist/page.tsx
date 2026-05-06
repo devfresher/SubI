@@ -4,9 +4,8 @@ import { isPreLaunchWaitlistEnabled } from "@/lib/config/preLaunch";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Early access — SubI",
-  description:
-    "Join the waitlist for SubI—subscription intelligence, timezone-aware renewal reminders, and optional inbox hints.",
+  title: "Early access · SubI",
+  description: "Join the waitlist for SubI. Renewals in one place, optional inbox hints, timezone-aware reminders.",
   robots: { index: false, follow: false },
 };
 

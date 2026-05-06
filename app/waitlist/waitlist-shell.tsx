@@ -36,7 +36,7 @@ export function WaitlistShell() {
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden text-foreground">
       <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-        {/* Small corner accents only — large arcs were crossing headline/body on narrow viewports */}
+        {/* Corner accents kept small so copy stays readable */}
         <div className="absolute -right-12 top-16 h-44 w-44 rounded-full border border-gold-bright/[0.09] opacity-80 dark:border-gold-bright/[0.06] sm:-right-8 sm:top-20 md:top-24" />
         <div className="absolute -bottom-8 -left-10 h-36 w-36 rounded-full border border-border/30 opacity-50 sm:-left-8" />
       </div>
@@ -125,9 +125,7 @@ export function WaitlistShell() {
                       {busy ? "Sending…" : "Join the waitlist"}
                     </button>
                   </div>
-                  <p className="mt-6 text-center text-[11px] leading-relaxed text-muted sm:text-left">
-                    No spam. Launch updates only—and only from us.
-                  </p>
+                  <p className="mt-6 text-center text-[11px] text-muted sm:text-left">Launch updates only.</p>
                 </div>
               )}
             </div>
@@ -136,7 +134,7 @@ export function WaitlistShell() {
       </main>
 
       <footer className="relative z-10 mt-auto border-t border-border/30 py-8 text-center">
-        <p className="text-xs text-muted">SubI — subscription intelligence</p>
+        <p className="text-xs text-muted">SubI · subscription intelligence</p>
       </footer>
     </div>
   );

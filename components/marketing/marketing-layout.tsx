@@ -79,14 +79,11 @@ function GuestMarketingHeader() {
             </span>
           </Link>
           <nav className="hidden items-center gap-1 md:flex" aria-label="Site">
-            <GuestNavItem href="/#built-for" anchor>
-              Who it&apos;s for
+            <GuestNavItem href="/#product" anchor>
+              Product
             </GuestNavItem>
-            <GuestNavItem href="/#features" anchor>
-              Features
-            </GuestNavItem>
-            <GuestNavItem href="/#how-it-works" anchor>
-              How it works
+            <GuestNavItem href="/#flow" anchor>
+              Flow
             </GuestNavItem>
             <GuestNavItem href="/pricing">Pricing</GuestNavItem>
           </nav>
@@ -142,9 +139,7 @@ export function MarketingLayout({
             <span className="font-display text-lg font-semibold">
               Sub<span className="text-gold-bright">I</span>
             </span>
-            <p className="max-w-[16rem] text-center text-xs text-muted sm:text-left">
-              One quiet place for every renewal—inbox hints optional, reminders in your timezone.
-            </p>
+            <p className="max-w-[14rem] text-center text-xs text-muted sm:text-left">Renewals in one place.</p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-muted">
             {signedIn ? (
@@ -184,20 +179,14 @@ export function MarketingLayout({
             <span className="text-border" aria-hidden>
               ·
             </span>
-            <a href="/#built-for" className="transition hover:text-foreground">
-              Who it&apos;s for
+            <a href="/#product" className="transition hover:text-foreground">
+              Product
             </a>
             <span className="text-border" aria-hidden>
               ·
             </span>
-            <a href="/#features" className="transition hover:text-foreground">
-              Features
-            </a>
-            <span className="text-border" aria-hidden>
-              ·
-            </span>
-            <a href="/#how-it-works" className="transition hover:text-foreground">
-              How it works
+            <a href="/#flow" className="transition hover:text-foreground">
+              Flow
             </a>
           </div>
         </div>

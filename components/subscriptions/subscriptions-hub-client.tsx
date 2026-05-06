@@ -75,10 +75,10 @@ export function SubscriptionsHubClient({
           Subscriptions
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-          Review renewals with clarity. Inbox parsing can be wrong—use{" "}
+          Parsing misses sometimes. Use{" "}
           <span className="font-medium text-foreground">Ignore</span>,{" "}
           <span className="font-medium text-foreground">Mark as subscription</span>, and{" "}
-          <span className="font-medium text-foreground">Edit date</span> to stay in control.
+          <span className="font-medium text-foreground">Edit date</span> to fix it.
         </p>
       </div>
 
@@ -178,8 +178,7 @@ export function SubscriptionsHubClient({
         <Card className="border border-dashed border-border/60 bg-card/40 p-10 text-center">
           <p className="font-medium text-foreground">No subscriptions yet</p>
           <p className="mt-2 text-sm text-muted">
-            Add one manually or connect Gmail under Settings → Mailboxes and run a sync—then curate with Ignore / Edit date when
-            the importer is unsure.
+            Add manually or connect Gmail in Settings, sync, then clean up with Ignore or Edit date when it looks off.
           </p>
         </Card>
       ) : filtered.length === 0 ? (

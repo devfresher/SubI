@@ -1,264 +1,236 @@
 "use client";
 
-import { PremiumSectionHeading, PremiumSurface } from "@/components/settings/settings-layout-primitives";
+import { PremiumSectionHeading } from "@/components/settings/settings-layout-primitives";
 import { MarketingLayout } from "@/components/marketing/marketing-layout";
 import { cn } from "@/lib/utils/strings";
 import Link from "next/link";
 
-const TRUST_ITEMS = [
-  "Mailbox sync is optional—you can run everything manually.",
-  "Reminders follow your timezone and per-plan lead times.",
-  "You approve what counts as a subscription; no blind automation.",
-] as const;
-
-const AUDIENCE = [
+const HIGHLIGHTS = [
   {
-    title: "Solo builders & freelancers",
-    body:
-      "You carry a dozen tools—analytics, CRM, AI, hosting. SubI gives you one ledger so invoices never ambush your month.",
-    icon: LayersIcon,
-  },
-  {
-    title: "Ops & finance-minded teams",
-    body:
-      "Need visibility without another enterprise stack? Delegate mailboxes per inbox, reconcile renewals centrally, cancel under pressure.",
-    icon: CompassIcon,
-  },
-  {
-    title: "Anyone tired of spreadsheets",
-    body:
-      "If chasing renewal emails in search isn’t sustainable, swap the chaos for structured dates, notes, and quiet alerts.",
-    icon: ClipboardIcon,
-  },
-] as const;
-
-const FEATURES = [
-  {
-    title: "Mailbox-aware detection",
-    body:
-      "Surface renewal receipts alongside what you enter by hand—one list across mailboxes without duplicate noise.",
+    title: "Inbox hints",
+    body: "Link a mailbox and we surface messages that look like renewals. You confirm, ignore, or edit. Nothing posts without your okay.",
     Icon: MailIcon,
   },
   {
-    title: "You stay in authority",
-    body: "Dismiss misfires, confirm real subscriptions, correct dates—the system assists; you approve.",
-    Icon: ShieldCheckIcon,
+    title: "Manual edits",
+    body: "Add plans by hand, fix amounts and dates, dedupe by name. Spreadsheet brain is optional; structure is not.",
+    Icon: PencilBoxIcon,
   },
   {
-    title: "Timezone-smart reminders",
-    body:
-      "Default lead times respect your profile, or customise when a yearly hit needs an earlier ping.",
+    title: "Reminders",
+    body: "Email heads-ups before a charge, timed to your timezone. Tweak lead time when a yearly bill deserves an early ping.",
     Icon: ClockIcon,
   },
   {
-    title: "Cancel links & context",
-    body: "Manage URLs and notes sit next to every plan—no scrambling through archived threads.",
+    title: "Cancel links",
+    body: "Keep billing and manage URLs beside each item so you are not hunting old threads when it is time to cancel.",
     Icon: LinkIconSvg,
   },
 ] as const;
 
 const STEPS = [
   {
-    step: "1",
+    step: "01",
     title: "Sign in",
-    body: "One identity for auth; connect a mailbox from Settings whenever you’re ready—never forced upfront.",
+    body: "Open an account in a minute. Connecting a mailbox is a later step from Settings, not a gate at the door.",
   },
   {
-    step: "2",
-    title: "Add or let your inbox hint",
-    body: "Type plans manually or run a mailbox sync—merge results into one polished roster grouped by mailbox.",
+    step: "02",
+    title: "Sync or type",
+    body: "Run inbox sync from mailboxes you approve, or enter renewals yourself. One list, sorted by what bills next.",
   },
   {
-    step: "3",
-    title: "Renew with foresight",
-    body: "Skim urgency at a glance, then let email reminders land before Stripe or PayPal do.",
+    step: "03",
+    title: "Get reminded",
+    body: "We notify you on your schedule so renewals are a choice, not a surprise line on a statement.",
   },
 ] as const;
+
+function HeroLedgerMock({ className }: { className?: string }) {
+  const rows = [
+    { name: "Design suite", date: "Jun 12", amount: "$48" },
+    { name: "Cloud host", date: "Jun 18", amount: "$89" },
+    { name: "Analytics", date: "Jul 2", amount: "$120" },
+  ];
+  return (
+    <div className={cn("relative w-full max-w-[22rem] lg:max-w-none", className)}>
+      <div
+        className="pointer-events-none absolute -inset-8 rounded-[2.5rem] bg-[radial-gradient(ellipse_at_30%_20%,var(--gold-glow),transparent_55%)] opacity-40 dark:opacity-55"
+        aria-hidden
+      />
+      <div className="relative overflow-hidden rounded-2xl border border-border/50 bg-card/95 shadow-premium-lg backdrop-blur-xl dark:bg-card/75">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-bright/35 to-transparent" aria-hidden />
+        <div className="flex items-center justify-between border-b border-border/40 px-5 py-4">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted">Due soon</span>
+          <span className="rounded-full border border-gold/30 bg-gold-dim/40 px-2.5 py-0.5 text-[10px] font-semibold text-gold-bright">
+            {rows.length} renewals
+          </span>
+        </div>
+        <ul className="divide-y divide-border/30 px-3 py-2">
+          {rows.map((row) => (
+            <li
+              key={row.name}
+              className="flex items-center gap-3 px-2 py-3 first:pt-2 last:pb-2 sm:gap-4"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-foreground">{row.name}</p>
+                <p className="mt-0.5 text-[11px] tabular-nums text-muted">{row.date}</p>
+              </div>
+              <p className="shrink-0 font-display text-sm font-semibold tabular-nums text-gold-bright">{row.amount}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
 
 export function LandingPage() {
   return (
     <MarketingLayout>
       <main className="relative z-10">
         {/* Hero */}
-        <section className="mx-auto max-w-6xl px-4 pb-10 pt-12 sm:px-6 sm:pb-14 sm:pt-16 lg:pb-16 lg:pt-20">
-          <div className="relative overflow-hidden rounded-3xl border border-border/35 bg-gradient-to-br from-card/90 via-background/65 to-card/80 p-[1px] shadow-premium backdrop-blur-sm dark:from-card/70 dark:to-card/40 dark:shadow-premium-lg sm:rounded-[1.85rem]">
-            {/* Glow stays in the top-right “empty” zone on mobile so it doesn’t wash across the headline */}
+        <section className="relative mx-auto max-w-6xl px-4 pt-10 sm:px-6 sm:pt-14 lg:pt-16">
+          <div className="relative overflow-hidden rounded-[1.75rem] border border-border/40 bg-gradient-to-br from-card/95 via-background/80 to-card/85 p-[1px] shadow-premium backdrop-blur-sm dark:from-card/80 dark:via-background/40 dark:to-card/50 sm:rounded-[2rem]">
             <div
-              className="pointer-events-none absolute z-0 rounded-full bg-[radial-gradient(circle,var(--vault-glow-tl)_0%,transparent_72%)] opacity-75 sm:opacity-95 dark:opacity-90 sm:dark:opacity-100 h-44 w-44 translate-x-[28%] -translate-y-[20%] right-0 top-0 sm:h-[min(28rem,90vw)] sm:w-[min(28rem,90vw)] sm:-translate-y-0 sm:translate-x-0 sm:-right-[18%] sm:-top-[55%]"
+              className="pointer-events-none absolute z-0 h-44 w-44 translate-x-[20%] -translate-y-[18%] rounded-full bg-[radial-gradient(circle,var(--vault-glow-tl)_0%,transparent_70%)] opacity-90 sm:h-72 sm:w-72 sm:translate-x-[40%] sm:-translate-y-[28%] lg:right-0 lg:top-0 lg:translate-x-[15%]"
               aria-hidden
             />
             <div
-              className="pointer-events-none absolute inset-y-6 left-0 z-0 w-px bg-gradient-to-b from-transparent via-gold-bright/50 to-transparent sm:inset-y-8"
+              className="pointer-events-none absolute bottom-0 left-0 z-0 h-48 w-48 -translate-x-1/4 translate-y-1/4 rounded-full border border-gold-bright/[0.07] dark:border-gold-bright/[0.05]"
               aria-hidden
             />
-            <div className="relative z-10 rounded-[calc(1.85rem-1px)] px-5 pb-10 pt-9 sm:px-10 sm:pb-14 sm:pt-12 lg:px-14">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gold-bright">
-                For people who forgot which tab holds the renewal
-              </p>
-              <h1 className="mt-4 max-w-[20ch] font-display text-4xl font-bold leading-[1.08] tracking-tight text-balance sm:max-w-3xl sm:text-5xl lg:text-[3.35rem]">
-                Know every renewal before it charges—not after the receipt.
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted text-balance sm:text-xl">
-                SubI is a composed subscription HQ: optional mailbox intelligence, tactile manual controls, reminders that feel luxurious,
-                never nagging—built for anyone paying for SaaS like it&apos;s another utility bill.
-              </p>
-              <div className="mt-11 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                <Link
-                  href="/login"
-                  className="inline-flex items-center justify-center rounded-xl bg-gold-bright px-6 py-3.5 text-sm font-semibold text-background shadow-premium transition hover:brightness-110 active:scale-[0.99] dark:text-background"
-                >
-                  Start free—no card
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="inline-flex items-center justify-center rounded-xl border border-border bg-card/80 px-6 py-3.5 text-sm font-medium text-foreground backdrop-blur-sm transition hover:border-gold/35 hover:bg-gold-dim/30"
-                >
-                  See plans
-                </Link>
-                <a
-                  href="#how-it-works"
-                  className="inline-flex items-center justify-center rounded-xl border border-border/60 bg-transparent px-6 py-3.5 text-sm font-medium text-muted transition hover:border-gold/25 hover:text-foreground"
-                >
-                  How it works
-                </a>
+            <div className="relative z-10 grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-10 lg:px-2 lg:py-2">
+              <div className="px-5 pb-6 pt-10 sm:px-10 sm:pb-10 sm:pt-12 lg:px-12 lg:py-14">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-gold-bright">Subscription ledger</p>
+                <h1 className="mt-5 font-display text-[2.35rem] font-semibold leading-[1.05] tracking-[-0.03em] text-balance sm:text-5xl lg:text-[3.5rem] lg:leading-[1.02]">
+                  <span className="bg-gradient-to-br from-foreground via-foreground to-gold-bright/90 bg-clip-text text-transparent dark:to-gold-bright/80">
+                    Renewals,
+                  </span>
+                  <br />
+                  before they bill.
+                </h1>
+                <p className="mt-6 max-w-lg text-base leading-relaxed text-muted sm:text-lg">
+                  SubI is one ledger for subscriptions you actually pay for: dates, amounts, and urgency in a single view.
+                  Optional mailbox hints fill the list faster; your edits always win when something looks wrong.
+                </p>
+                <div className="mt-9 flex flex-wrap items-center gap-3">
+                  <Link
+                    href="/login"
+                    className="inline-flex min-h-[3rem] items-center justify-center rounded-full bg-gold-bright px-8 text-sm font-semibold text-background shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_12px_40px_-12px_rgba(201,162,39,0.55)] transition hover:brightness-110 active:scale-[0.99] dark:text-background"
+                  >
+                    Get started
+                  </Link>
+                  <Link
+                    href="/pricing"
+                    className="inline-flex min-h-[3rem] items-center justify-center rounded-full border border-border/80 bg-background/50 px-7 text-sm font-semibold text-foreground backdrop-blur-sm transition hover:border-gold/35 hover:bg-gold-dim/25 dark:bg-background/20"
+                  >
+                    Pricing
+                  </Link>
+                  <a
+                    href="#flow"
+                    className="inline-flex min-h-[3rem] items-center justify-center px-4 text-sm font-medium text-muted transition hover:text-foreground"
+                  >
+                    How it works
+                  </a>
+                </div>
+                <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-muted/90">
+                  <span>Manual or inbox</span>
+                  <span className="text-gold-bright/40" aria-hidden>
+                    ·
+                  </span>
+                  <span>No card to try</span>
+                  <span className="text-gold-bright/40" aria-hidden>
+                    ·
+                  </span>
+                  <span>You stay in charge</span>
+                </div>
+              </div>
+              <div className="relative flex justify-center px-5 pb-10 sm:px-10 lg:justify-end lg:pb-0 lg:pr-10 lg:pt-10">
+                <HeroLedgerMock />
               </div>
             </div>
           </div>
-
-          <ul className="mt-10 flex flex-col gap-3 sm:mt-12 sm:flex-row sm:flex-wrap sm:gap-x-10 sm:gap-y-3">
-            {TRUST_ITEMS.map((line) => (
-              <li
-                key={line}
-                className="flex items-start gap-3 text-sm leading-snug text-muted sm:max-w-[17rem] sm:items-center"
-              >
-                <span
-                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gold/30 bg-gold-dim/40 text-gold-bright sm:mt-0"
-                  aria-hidden
-                >
-                  <CheckIcon className="h-3.5 w-3.5" />
-                </span>
-                <span>{line}</span>
-              </li>
-            ))}
-          </ul>
         </section>
 
-        {/* Audience */}
-        <section id="built-for" className="scroll-mt-24 section-rule-top py-16 sm:py-20">
+        {/* Product highlights: titles only */}
+        <section id="product" className="scroll-mt-24 section-rule-top py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <PremiumSectionHeading
-              eyebrow="Audience"
-              title="Built for people who own the software stack"
-              description="Whether you’re self-employed or keeping a team lean, SubI respects how you work—no enterprise theatre, no guilt-tripping dashboards."
+              eyebrow="Product"
+              title="What you get"
+              description="A calm place to watch renewals without another enterprise stack. Intelligence where it helps; silence where it does not."
             />
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {AUDIENCE.map(({ title, body, icon: Icon }) => (
-                <article
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {HIGHLIGHTS.map(({ title, body, Icon }) => (
+                <div
                   key={title}
-                  className="group relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-b from-card/88 to-card/55 p-6 shadow-premium transition hover:border-gold/30 hover:shadow-premium-lg dark:from-card/60 dark:to-card/40"
+                  className="group relative overflow-hidden rounded-2xl border border-border/45 bg-gradient-to-b from-card/90 to-card/50 p-6 shadow-premium transition hover:border-gold/28 dark:from-card/60 dark:to-card/35"
                 >
                   <span
-                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-gold/25 bg-gold-dim/45 text-gold-bright transition group-hover:border-gold/40"
+                    className="flex h-11 w-11 items-center justify-center rounded-xl border border-gold/25 bg-gold-dim/40 text-gold-bright transition group-hover:border-gold/40"
                     aria-hidden
                   >
                     <Icon className="h-5 w-5" />
                   </span>
-                  <h3 className="mt-5 font-display text-lg font-semibold text-foreground">{title}</h3>
+                  <h3 className="mt-5 font-display text-lg font-semibold tracking-tight text-foreground">{title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{body}</p>
-                </article>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Features */}
-        <section id="features" className="section-rule-top scroll-mt-24 bg-card/35 py-16 dark:bg-card/15 sm:py-20">
+        {/* Flow */}
+        <section id="flow" className="scroll-mt-24 section-rule-top py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
             <PremiumSectionHeading
-              eyebrow="Product"
-              title="Signals you can verify—then reminders you can trust"
-              description={
-                <>
-                  Elegant obsidian styling carries through the app—not a bolt-on spreadsheet skin. Combine mailbox hints with decisive manual tuning.
-                </>
-              }
+              eyebrow="Flow"
+              title="Three steps"
+              description="From empty list to informed renewals without a weekend migration project."
             />
-            <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {FEATURES.map(({ title, body, Icon }) => (
-                <li key={title}>
-                  <PremiumSurface className="h-full">
-                    <span
-                      className="flex h-10 w-10 items-center justify-center rounded-xl border border-gold/25 bg-gold-dim/45 text-gold-bright"
-                      aria-hidden
-                    >
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <h3 className="mt-5 font-display text-lg font-semibold text-foreground">{title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted">{body}</p>
-                  </PremiumSurface>
+            <ol className="mt-12 grid gap-10 sm:grid-cols-3 sm:gap-8">
+              {STEPS.map(({ step, title, body }) => (
+                <li key={step} className="relative text-center sm:text-left">
+                  <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-gold/35 bg-gradient-to-br from-gold-dim/55 to-gold-dim/25 font-mono text-sm font-bold text-gold-bright shadow-sm sm:mx-0">
+                    {step}
+                  </div>
+                  <h3 className="mt-5 font-display text-xl font-semibold text-foreground">{title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted">{body}</p>
                 </li>
               ))}
-            </ul>
+            </ol>
           </div>
         </section>
 
-        {/* How it works */}
-        <section id="how-it-works" className="scroll-mt-24 py-16 sm:py-20">
+        {/* Closing */}
+        <section className="section-rule-top pb-20 pt-6 sm:pb-24 sm:pt-8">
           <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <PremiumSurface>
-              <div className="pb-6 sm:pb-8">
-                <PremiumSectionHeading
-                  eyebrow="Flow"
-                  title="Three moves to reclaim the renewal calendar"
-                  description="From first login to reminders, SubI stays out of your way until it needs to whisper."
-                />
-              </div>
-              <ol className="grid gap-8 border-t border-border/25 pt-10 lg:grid-cols-3 lg:gap-10">
-                {STEPS.map((s) => (
-                  <li key={s.step} className="lg:pb-2">
-                    <div className="flex gap-5">
-                      <span className="flex h-9 min-w-[2.25rem] shrink-0 items-center justify-center rounded-xl border border-gold/35 bg-gradient-to-br from-gold-dim/60 to-gold-dim/35 font-display text-sm font-bold text-gold-bright shadow-sm">
-                        {s.step}
-                      </span>
-                      <div className="min-w-0">
-                        <h3 className="font-display text-lg font-semibold text-foreground">{s.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </PremiumSurface>
-          </div>
-        </section>
-
-        {/* Finale CTA */}
-        <section className="section-rule-top pb-20 pt-8 sm:pb-24">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <div className="relative overflow-hidden rounded-3xl border border-gold/25 bg-gradient-to-br from-gold-dim/35 via-card/80 to-background/90 p-[1px] shadow-premium dark:from-gold-dim/20 dark:to-card/50">
+            <div className="relative overflow-hidden rounded-3xl border border-gold/30 bg-gradient-to-br from-gold-dim/30 via-card/85 to-background p-[1px] shadow-premium dark:from-gold-dim/15 dark:via-card/50">
               <div
-                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_85%_-10%,rgba(228,199,90,0.18),transparent_55%)]"
+                className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_50%_at_80%_0%,rgba(201,162,39,0.14),transparent_50%)]"
                 aria-hidden
               />
-              <div className="relative rounded-[calc(1.5rem-1px)] px-6 py-12 text-center sm:px-10 sm:py-14">
-                <h2 className="mx-auto max-w-xl font-display text-2xl font-bold tracking-tight text-balance sm:text-3xl">
-                  Keep the stack you love—without surprise renewals
+              <div className="relative rounded-[calc(1.5rem-1px)] px-6 py-14 text-center sm:px-12 sm:py-16">
+                <h2 className="mx-auto max-w-xl font-display text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+                  Ready when you are.
                 </h2>
-                <p className="mx-auto mt-4 max-w-lg text-muted">
-                  Sign in, connect mailboxes when you’re ready, and let SubI keep the optics clear across every subscription surface.
+                <p className="mx-auto mt-5 max-w-lg text-sm leading-relaxed text-muted sm:text-base">
+                  Start on the free tier, invite your mailboxes when it makes sense, and upgrade when you need more inboxes
+                  or reminder depth. No theatrics, no guilt-trip dashboards.
                 </p>
                 <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
                   <Link
                     href="/login"
-                    className="inline-flex min-w-[11rem] items-center justify-center rounded-xl bg-gold-bright px-8 py-3.5 text-sm font-semibold text-background shadow-premium transition hover:brightness-110 active:scale-[0.99] dark:text-background"
+                    className="inline-flex min-w-[10rem] items-center justify-center rounded-full bg-gold-bright px-8 py-3.5 text-sm font-semibold text-background shadow-premium transition hover:brightness-110 active:scale-[0.99] dark:text-background"
                   >
                     Open SubI
                   </Link>
                   <Link
                     href="/pricing"
-                    className="inline-flex items-center justify-center rounded-xl border border-border/90 bg-background/65 px-8 py-3.5 text-sm font-medium text-foreground backdrop-blur-sm transition hover:border-gold/40 dark:bg-background/25"
+                    className="inline-flex items-center justify-center rounded-full border border-border/80 bg-background/60 px-8 py-3.5 text-sm font-semibold text-foreground backdrop-blur-sm transition hover:border-gold/40 dark:bg-background/25"
                   >
-                    Compare tiers
+                    Plans
                   </Link>
                 </div>
               </div>
@@ -267,55 +239,6 @@ export function LandingPage() {
         </section>
       </main>
     </MarketingLayout>
-  );
-}
-
-function CheckIcon({ className }: { className?: string }) {
-  return (
-    <svg className={cn("text-gold-bright", className)} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.25} d="M5 13l4 4L19 7" />
-    </svg>
-  );
-}
-
-function LayersIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.65}
-        d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"
-      />
-    </svg>
-  );
-}
-
-function CompassIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.65}
-        d="M12 21a9 9 0 100-18 9 9 0 000 18z"
-      />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.65} d="M17 7l-3.5 8.5L7 17l3.5-8.5L17 7z" />
-    </svg>
-  );
-}
-
-function ClipboardIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.65}
-        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-      />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.65} d="M9 12h6m-6 4h4" />
-    </svg>
   );
 }
 
@@ -332,14 +255,14 @@ function MailIcon({ className }: { className?: string }) {
   );
 }
 
-function ShieldCheckIcon({ className }: { className?: string }) {
+function PencilBoxIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden>
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={1.65}
-        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+        d="M11 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 013 3L13 14l-4 1 1-4 8.5-8.5z"
       />
     </svg>
   );

@@ -245,7 +245,7 @@ export function LoginForm({ authError, redirectTo }: { authError?: string; redir
                       <p className="text-xs leading-relaxed text-muted">
                         Protected session via Supabase auth.{" "}
                         <Link
-                          href="/#features"
+                          href="/#product"
                           className="font-medium text-gold-bright underline-offset-4 transition hover:underline"
                         >
                           New to SubI?

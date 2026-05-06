@@ -59,7 +59,7 @@ export function DashboardClient({
           Dashboard
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">
-          A calm read on what’s renewing soon—your full roster, filters, and manual tooling live on{" "}
+          Next two weeks on this page. Full list on{" "}
           <Link href="/subscriptions" className="font-semibold text-gold-bright underline-offset-4 hover:underline">
             Subscriptions
           </Link>
@@ -79,7 +79,7 @@ export function DashboardClient({
               <p className="mt-4 font-display text-4xl font-bold tabular-nums tracking-tight text-foreground sm:text-[2.65rem]">
                 {activeCount}
               </p>
-              <p className="mt-3 text-xs leading-snug text-muted">Services you’re actively watching in SubI.</p>
+              <p className="mt-3 text-xs leading-snug text-muted">Active plans you track here.</p>
             </div>
           </div>
           <div className="rounded-2xl border border-border/25 bg-muted/10 px-6 py-6 sm:col-span-2 sm:py-7 dark:bg-muted/[0.08]">
@@ -87,8 +87,7 @@ export function DashboardClient({
               Renewal window · 14 days
             </p>
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted">
-              Cards below tighten on anything charging inside two weeks—urgency ribbons mirror colour logic from your main
-              list. Missed a renewal date? Correct it anytime on Subscriptions.
+              Anything billing inside 14 days shows below. Fix dates on Subscriptions if something looks off.
             </p>
           </div>
         </div>
@@ -97,12 +96,12 @@ export function DashboardClient({
       {!hasGmail ? (
         <PremiumSurface>
           <div className="rounded-xl border border-gold/30 bg-gold-dim/25 px-5 py-4 dark:border-gold/25 dark:bg-gold-dim/18">
-          <p className="text-sm leading-relaxed text-muted">
-            Unlock automated hints by connecting Gmail under{" "}
+          <p className="text-sm text-muted">
+            Connect Gmail in{" "}
             <Link href="/settings" className="font-semibold text-gold-bright underline-offset-2 hover:underline">
               Settings → Mailboxes
             </Link>
-            , then tidy imports on{" "}
+            . Tune imports on{" "}
             <Link href="/subscriptions" className="font-semibold text-foreground underline-offset-2 hover:underline">
               Subscriptions
             </Link>
@@ -117,7 +116,7 @@ export function DashboardClient({
           <PremiumSectionHeading
             eyebrow="Horizon"
             title="Upcoming renewals"
-            description="Everything landing inside the next fortnight appears here first—prioritised by urgency, lightest skim on the Dashboard, deep control elsewhere."
+            description="Charges in the next 14 days, most urgent first."
           />
           <div className="flex flex-wrap gap-3">
             <Button variant="secondary" type="button" onClick={() => setSheetOpen(true)} className="min-h-[2.65rem]">
@@ -159,11 +158,9 @@ export function DashboardClient({
         {!isLoading && !isError && upcoming.length === 0 ? (
           <PremiumSurface>
             <div className="border border-dashed border-border/55 bg-muted/15 py-14 text-center dark:bg-muted/[0.08]">
-              <p className="font-display text-lg font-semibold text-foreground">Quiet horizon</p>
+              <p className="font-display text-lg font-semibold text-foreground">Nothing due soon</p>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-muted">
-                Nothing is slated to renew in the next two weeks. Sync Gmail from Mailboxes or add subscriptions manually—when
-                urgency appears,
-                you’ll find it pinned here instantly.
+                Nothing due in two weeks. Add a plan or connect Gmail under Settings, then sync.
               </p>
               <Link href="/subscriptions" className={cn(subscriptionsLinkClass, "mx-auto mt-8 inline-flex max-w-fit")}>
                 Browse Subscriptions

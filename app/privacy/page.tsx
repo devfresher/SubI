@@ -11,8 +11,8 @@ import { getMarketingLayoutAuth } from "@/lib/auth/marketingLayoutAuth";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — SubI",
-  description: "How SubI collects, uses, and protects your data—including optional mailbox sync and reminders.",
+  title: "Privacy Policy · SubI",
+  description: "How SubI handles data when you use renewals, optional mailbox sync, and reminders.",
 };
 
 const TOC = [

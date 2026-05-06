@@ -21,7 +21,7 @@ Use **pnpm only** (enforced via `preinstall`).
 
 | Path | Purpose |
 |------|---------|
-| `app/waitlist/` | Pre-launch waitlist (only when `SUBI_PRE_LAUNCH=1`; middleware blocks other routes) |
+| `app/waitlist/` | Pre-launch waitlist (`SUBI_PRE_LAUNCH=1`; middleware gates other routes) |
 | `app/(auth)/` | Login |
 | `app/(dashboard)/` | Authenticated shell: `/dashboard`, `/settings` |
 | `app/api/` | Route handlers: Gmail OAuth, `POST /api/sync/gmail`, settings, `DELETE /api/email-accounts/[id]` |
