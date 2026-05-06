@@ -49,13 +49,20 @@ export async function POST(request: Request) {
   let admin: ReturnType<typeof createServiceRoleClient>;
   try {
     admin = createServiceRoleClient();
-  } catch {
+  } catch (err) {
+    console.error("[waitlist] createServiceRoleClient failed:", err instanceof Error ? err.message : err);
     return NextResponse.json({ error: "Waitlist is temporarily unavailable." }, { status: 503 });
   }
 
   const { error } = await admin.from("waitlist_signups").insert({ email });
 
   if (error && error.code !== "23505") {
+    console.error("[waitlist] insert failed:", {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
     return NextResponse.json({ error: "Could not save your email. Try again." }, { status: 500 });
   }
 
